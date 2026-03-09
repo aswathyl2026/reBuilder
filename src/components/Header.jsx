@@ -12,7 +12,7 @@ function Header() {
   const introduction="At rBuilder, we understand that a great career starts with a great resume. Our mission is to simplify the resume creation process for students, job seekers, and professionals by providing an intuitive and user-friendly tool that helps you craft personalized, visually appealing, and ATS-friendly resumes — without the need for design or formatting skills."
   return (   
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{backgroundColor:'purple'}}>
+      <AppBar position="static" sx={{backgroundColor:'#534a40'}}>
         <Toolbar>
           <IconButton
             size="large"
