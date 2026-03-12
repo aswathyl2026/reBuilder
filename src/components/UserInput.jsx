@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -11,10 +11,27 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-MenuItem
-const steps = ['Basic Informations', 'Contact Details', 'Education Details', 'Work Experience', 'Review & Submit'];
+import jobType from '../assets/jobRole.json'
+const steps = ['Basic Informations', 'Contact Details', 'Education Details','Review & Submit'];
 function UserInput() {
     const [activeStep, setActiveStep] = React.useState(0);
+    const [resumeData,setResumeData]=useState({
+        fullName:"",
+        location:"",
+        job:"",
+        email:"",
+        phone:"",
+        linkedin:"",
+        github:"",
+        degree:"",
+        university:"",
+        passOut:"",
+        skills:[],
+        summary:""
+
+    })
+    console.log(resumeData);
+    
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -30,19 +47,26 @@ function UserInput() {
                 <div>
                     <h3>Personal Details</h3>
                     <div className="p-3 row">
-                        <TextField id="standard-basic-name" label="Full name" variant="standard" />
-                        <TextField id="standard-basic-loc" label="Location" variant="standard" />
+                        <TextField onChange={e=>setResumeData({...resumeData,fullName:e.target.value})}
+                        id="standard-basic-name" label="Full name" variant="standard" FormControl/>
+                        <TextField onChange={e=>setResumeData({...resumeData,location:e.target.value})}
+                        id="standard-basic-loc" label="Location" variant="standard" />
                         <FormControl variant="standard"  >
                             <InputLabel id="demo-simple-select-helper-label">Choose Job Title</InputLabel>
-                            <Select
+                            <Select  onChange={e=>setResumeData({...resumeData,job:e.target.value})} defaultValue={''}
                                 labelId="demo-simple-select-helper-label"
                                 id="demo-simple-select-helper"
                                 label="Age"
                             >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={10}>Ten</MenuItem>
+                                {
+                                    jobType.jobRoles.map(role=>(
+                                    <MenuItem key={role} value={role}>{role}</MenuItem>
+                                    ))
+
+                                    
+                                }
+                                
+                                
                             </Select>
                            
                         </FormControl>
@@ -54,7 +78,8 @@ function UserInput() {
                 <div>
                     <h3>Contact Details</h3>
                     <div className="p-3 row">
-                        <TextField id="standard-basic-email" label="Email" variant="standard" />
+                        <TextField onChange={e=>setResumeData({...resumeData,email:e.target.value})}
+                        id="standard-basic-email" label="Email" variant="standard" />
                         <TextField id="standard-basic-phone" label="Contact Number" variant="standard" />
                         <TextField id="standard-basic-linkedin" label="LinkedIn Link" variant="standard" />
                         <TextField id="standard-basic-github" label="Github Link" variant="standard" />
@@ -74,19 +99,8 @@ function UserInput() {
                     </div>
                 </div>
             )
-            case 3: return (
-                <div>
-                    <h3>Work Experience</h3>
-                    <div className="p-3 row">
-                        <TextField id="standard-basic-desig" label="Designation" variant="standard" />
-                        <TextField id="standard-basic-company" label="Company Name" variant="standard" />
-                        <TextField id="standard-basic-yearjob" label="Duration" variant="standard" />
-                      
-
-                    </div>
-                </div>
-            )
-            case 4: return(
+           
+            case 3: return(
                 <div>
                     <h6>Our AI will generate Skills and Summary according your Job Title. Click the <b>AI Skill & Summary</b> to proceed</h6>
                 </div>
