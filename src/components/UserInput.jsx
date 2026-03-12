@@ -12,24 +12,12 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import jobType from '../assets/jobRole.json'
+import skillJson from '../assets/jobSkills.json'
+import summaryJson from '../assets/summaries.json'
 const steps = ['Basic Informations', 'Contact Details', 'Education Details','Review & Submit'];
-function UserInput() {
+function UserInput({resumeData,setResumeData}) {
     const [activeStep, setActiveStep] = React.useState(0);
-    const [resumeData,setResumeData]=useState({
-        fullName:"",
-        location:"",
-        job:"",
-        email:"",
-        phone:"",
-        linkedin:"",
-        github:"",
-        degree:"",
-        university:"",
-        passOut:"",
-        skills:[],
-        summary:""
 
-    })
     console.log(resumeData);
     
 
@@ -40,6 +28,13 @@ function UserInput() {
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
+    const generateAI=()=>{
+   setResumeData({...resumeData,
+    skills:skillJson[resumeData.job],
+    summary:summaryJson[resumeData.job]
+   })
+   handleNext()
+    }
  
     const renderStepContent = (stepCount) => {
         switch (stepCount) {
@@ -47,13 +42,13 @@ function UserInput() {
                 <div>
                     <h3>Personal Details</h3>
                     <div className="p-3 row">
-                        <TextField onChange={e=>setResumeData({...resumeData,fullName:e.target.value})}
-                        id="standard-basic-name" label="Full name" variant="standard" FormControl/>
-                        <TextField onChange={e=>setResumeData({...resumeData,location:e.target.value})}
+                        <TextField value={resumeData.fullName} onChange={e=>setResumeData({...resumeData,fullName:e.target.value})}
+                        id="standard-basic-name" label="Full name" variant="standard" />
+                        <TextField  value={resumeData.location} onChange={e=>setResumeData({...resumeData,location:e.target.value})}
                         id="standard-basic-loc" label="Location" variant="standard" />
                         <FormControl variant="standard"  >
                             <InputLabel id="demo-simple-select-helper-label">Choose Job Title</InputLabel>
-                            <Select  onChange={e=>setResumeData({...resumeData,job:e.target.value})} defaultValue={''}
+                            <Select  onChange={e=>setResumeData({...resumeData,job:e.target.value})} value={resumeData.job} defaultValue=''
                                 labelId="demo-simple-select-helper-label"
                                 id="demo-simple-select-helper"
                                 label="Age"
@@ -78,11 +73,14 @@ function UserInput() {
                 <div>
                     <h3>Contact Details</h3>
                     <div className="p-3 row">
-                        <TextField onChange={e=>setResumeData({...resumeData,email:e.target.value})}
+                        <TextField value={resumeData.email} onChange={e=>setResumeData({...resumeData,email:e.target.value})}
                         id="standard-basic-email" label="Email" variant="standard" />
-                        <TextField id="standard-basic-phone" label="Contact Number" variant="standard" />
-                        <TextField id="standard-basic-linkedin" label="LinkedIn Link" variant="standard" />
-                        <TextField id="standard-basic-github" label="Github Link" variant="standard" />
+                        <TextField  value={resumeData.phone} onChange={e=>setResumeData({...resumeData,phone:e.target.value})}
+                        id="standard-basic-phone" label="Contact Number" variant="standard" />
+                        <TextField  value={resumeData.linkedin} onChange={e=>setResumeData({...resumeData,linkedin:e.target.value})}
+                        id="standard-basic-linkedin" label="LinkedIn Link" variant="standard" />
+                        <TextField  value={resumeData.github} onChange={e=>setResumeData({...resumeData,github:e.target.value})}
+                        id="standard-basic-github" label="Github Link" variant="standard" />
 
                     </div>
                 </div>
@@ -91,10 +89,13 @@ function UserInput() {
                 <div>
                     <h3>Education  Details</h3>
                     <div className="p-3 row">
-                        <TextField id="standard-basic-degree" label="Bachelor's Degree" variant="standard" />
-                        <TextField id="standard-basic-college" label="College/University" variant="standard" />
-                        <TextField id="standard-basic-year" label="Year of Graduation" variant="standard" />
-                        <TextField id="standard-basic-github" label="Github Link" variant="standard" />
+                        <TextField  value={resumeData.degree} onChange={e=>setResumeData({...resumeData,degree:e.target.value})}
+                        id="standard-basic-degree" label="Bachelor's Degree" variant="standard" />
+                        <TextField   value={resumeData.university} onChange={e=>setResumeData({...resumeData,university:e.target.value})}
+                        id="standard-basic-college" label="College/University" variant="standard" />
+                        <TextField  value={resumeData.passOut} onChange={e=>setResumeData({...resumeData,passOut:e.target.value})}
+                        id="standard-basic-year" label="Year of Graduation" variant="standard" />
+                      
 
                     </div>
                 </div>
@@ -128,7 +129,7 @@ function UserInput() {
             {activeStep === steps.length ? (
                 <React.Fragment>
                     <Typography sx={{ mt: 2, mb: 1 }}>
-                        All steps completed - you&apos;re finished
+                        All steps completed 
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                         <Box sx={{ flex: '1 1 auto' }} />
@@ -157,7 +158,7 @@ function UserInput() {
                         
                         {
                           activeStep === steps.length - 1 ? 
-                          <Button>AI Skill & Summary</Button> 
+                          <Button onClick={generateAI}>AI Skill & Summary</Button> 
                           :<Button onClick={handleNext}>Next</Button> 
                         }
                     </Box>
