@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState} from 'react'
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -14,8 +14,13 @@ import Select from '@mui/material/Select';
 import jobType from '../assets/jobRole.json'
 import skillJson from '../assets/jobSkills.json'
 import summaryJson from '../assets/summaries.json'
+import { addResumeApi } from '../services/allResumeService';
+import { useNavigate } from 'react-router-dom';
 const steps = ['Basic Informations', 'Contact Details', 'Education Details','Review & Submit'];
+
+
 function UserInput({resumeData,setResumeData}) {
+    const navigate=useNavigate()
     const [activeStep, setActiveStep] = React.useState(0);
 
     console.log(resumeData);
@@ -28,6 +33,7 @@ function UserInput({resumeData,setResumeData}) {
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
+   
     const generateAI=()=>{
    setResumeData({...resumeData,
     skills:skillJson[resumeData.job],
@@ -109,6 +115,24 @@ function UserInput({resumeData,setResumeData}) {
             default: return null
         }
     }
+     const handleAddResume=async()=>{
+       const {fullName,location,job,email,phone,linkedin,github,degree,university,passOut,skills,summary}=resumeData
+      if(fullName && location && job && email && phone && linkedin && github && degree && university && passOut && skills.length>0 && summary)
+        {
+            const response= await addResumeApi(resumeData)
+           
+            if(response.status==201){
+                alert("resume added successfully")
+                 console.log(response);
+                const resumeId=response.data.id
+                navigate(`/resume/${resumeId}/view`)
+            }}
+    else{
+          alert("please fill th form completely")
+        }
+            
+           
+    }
 
     return (
         <Box sx={{ width: '100%' }}>
@@ -133,7 +157,7 @@ function UserInput({resumeData,setResumeData}) {
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                         <Box sx={{ flex: '1 1 auto' }} />
-                        <Button>Finish</Button>
+                        <Button onClick={handleAddResume}>Finish</Button>
                     </Box>
                 </React.Fragment>
             ) : (
