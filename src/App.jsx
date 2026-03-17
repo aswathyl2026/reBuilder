@@ -23,7 +23,7 @@ function App() {
         <Route path="/steps" element={<ResumeSteps/>}/>
         <Route path="/downloads" element={<Downloads/>}/>
         <Route path="/*" element={<PageNotFound />}/>
-        <Route path="/resume/:id/view" element={<ViewResume />}/>
+        <Route path="/resume/:pid/view" element={<ViewResume />}/>
      </Routes>
     <Footer/> 
    </>
