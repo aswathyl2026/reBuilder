@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { IoArrowBackSharp } from 'react-icons/io5'
 import { MdDelete } from 'react-icons/md'
 import { Link } from 'react-router-dom'
-import { getDownloadResumeApi } from '../services/allResumeService'
+import { deleteDownloadResumeApi, getDownloadResumeApi } from '../services/allResumeService'
 
 function Downloads() {
 
   const [allDownloads,setallDownloads]=useState([])
-  console.log(allDownloads);
+
   
   useEffect(()=>{
     getAllDownload()
@@ -17,8 +17,15 @@ function Downloads() {
   const result=await getDownloadResumeApi()
   if(result.status==200){
     setallDownloads(result.data)
+   
+    
   }
  }
+ const deleteDownload=async (id)=>{
+  await deleteDownloadResumeApi(id)
+  getAllDownload();
+ }
+ 
 
   return (
     <div className='container'>
@@ -28,17 +35,25 @@ function Downloads() {
       </div> 
 
       <div className="row mb-5">
-        <div className="col-lg-4">
+        {
+          
+          allDownloads.length>0 ?
+          allDownloads?.map(resume=>(
+            <div key={resume?.id} className="col-lg-4">
           <div  style={{height:'400px'}} className="shadow p-3 rounded">
            <div className="d-flex align-items-center justify-content-between">
-             <h5>review at : {result.data}</h5>
-             <button className='btn btn-danger fs-5'><MdDelete/></button>
+             <h6>review at : {resume?.resumeData.timeStamp}</h6>
+             <button onClick={()=>deleteDownload(resume?.id)} className='btn btn-danger fs-5'><MdDelete/></button>
            </div>
            <div className="mt-3 text-center">
-             <img width={'200px'}  height={'300px'}src="cv.jpeg" alt="cv" />
+             <Link to={`/resume/${resume?.resumeData.pid}/view`}><img width={'200px'}  height={'300px'}src={resume?.resumeData.resumeImg} alt="cv" /></Link>
            </div>
           </div>
         </div>
+          ))
+          :
+          <div className='text-danger'>No resume Downloaded yet</div>
+        }
       </div>
     </div>
   )
