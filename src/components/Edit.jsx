@@ -50,8 +50,20 @@ function Edit({resumeData,setResumeData}) {
         alert("enter a valid skill")
        }
     }
-    const updateResume=async (data,rid)=>{
-    await updateResumeApi(rid,data)
+    const updateResume=async ()=>{
+    const {fullName,location,job,email,phone,linkedin,github,degree,university,passOut,skills,summary}=resumeData
+      if(fullName && location && job && email && phone && linkedin && github && degree && university && passOut && skills.length>0 && summary)
+        {
+            const response= await updateResumeApi(resumeData?.id,resumeData)
+           
+            if(response.status==200){
+                alert("resume added successfully")
+                 //console.log(response);
+                handleClose()
+            }}
+    else{
+          alert("please fill th form completely")
+        }
    
     }
 
@@ -155,7 +167,7 @@ function Edit({resumeData,setResumeData}) {
                                 
                             </div>
                         </div>
-                        <button className='btn btn-primary' onClick={()=>updateResume(resumeData,resumeData.id)}>Update{resumeData.id}</button>
+                        <button className='btn btn-primary' onClick={updateResume}>Update</button>
                     </Box>
                 </Box>
             </Modal>

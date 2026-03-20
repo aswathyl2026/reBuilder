@@ -16,6 +16,6 @@ export const getDownloadResumeApi=async()=>{
 export const deleteDownloadResumeApi=async(resumeId)=>{
    return await apiService("DELETE",`/downloads/${resumeId}`,{})
 }
-export const updateResumeApi=async(id,resumeData)=>{
-   return await apiService("PATCH",`/allresumes/${id}`,resumeData)
+export const updateResumeApi=async(id,updateDetails)=>{
+   return await apiService("PUT",`/allresumes/${id}`,updateDetails)
 }

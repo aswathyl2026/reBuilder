@@ -67,9 +67,9 @@ function ViewResume() {
             {/*edit*/ }
              <Edit resumeData={resumeData} setResumeData={setResumeData}/>
             {/*history*/ }
-            <Link to='{/downloads}' className='btn text-danger fs-2 me-2'><IoMdRefresh/></Link>
+            <Link to='/downloads' className='btn text-danger fs-2 me-2'><IoMdRefresh/></Link>
             {/*back*/ }
-            <Link to='{/form}'className='btn text-success fs-2 me-2'><FaFastBackward/></Link>
+            <Link to='/forms'className='btn text-success fs-2 me-2'><FaFastBackward/></Link>
           </div>
           <div ref={previewRef} className='p-5'><Preview resumeData={resumeData}/></div>
         </div>
